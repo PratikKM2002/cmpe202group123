@@ -92,7 +92,9 @@ export async function POST(request: Request) {
     return NextResponse.json(booking);
   } catch (error) {
     console.error('Error creating booking:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ 
+      error: error instanceof Error ? error.message : 'Failed to create booking' 
+    }, { status: 500 });
   }
 }
 

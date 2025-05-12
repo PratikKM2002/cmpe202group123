@@ -1,4 +1,5 @@
 import { Button } from "./ui/button";
+import Image from 'next/image';
 
 type Restaurant = {
   id: number;
@@ -24,13 +25,12 @@ export default function RestaurantCard({ restaurants, onDeleteClick, onEditClick
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 p-4">
       {restaurants.map((restaurant: any) => (
         <div key={restaurant.id} className="border rounded p-4 shadow hover:shadow-lg">
-          <img
-            src={restaurant.imageUrl}
-            alt={`${restaurant.name} image`}
+          <Image
+            src={restaurant.imageUrl || '/placeholder-restaurant.jpg'}
+            alt={restaurant.name}
             width={400}
             height={300}
-            className="mb-4 rounded object-cover"
-            loading="lazy"
+            className="w-full h-48 object-cover rounded-t-lg"
           />
           <h3 className="text-lg font-semibold truncate">{restaurant.name}</h3>
           <p className="truncate">{restaurant.description}</p>

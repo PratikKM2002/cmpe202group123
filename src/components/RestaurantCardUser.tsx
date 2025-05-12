@@ -10,6 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 type Restaurant = {
   id: number;
@@ -59,6 +60,20 @@ export default function RestaurantCardUser({ restaurants, onDeleteClick, onEditC
     setSelectedCuisine("all");
     setSelectedPriceRange("all");
     setSelectedRating("all");
+  };
+
+  const handleFilterChange = (type: string, value: string) => {
+    switch (type) {
+      case 'cuisine':
+        setSelectedCuisine(value);
+        break;
+      case 'priceRange':
+        setSelectedPriceRange(value);
+        break;
+      case 'rating':
+        setSelectedRating(value);
+        break;
+    }
   };
 
   return (

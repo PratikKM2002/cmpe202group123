@@ -51,6 +51,7 @@ const RestaurantDetailPage = () => {
   const { isAuthenticated } = useUserAuth();
   const params = useParams();
   const router = useRouter();
+  const [error, setError] = useState<Error | null>(null);
 
   const handleLoginRedirect = () => {
     router.push("/user/login");
@@ -166,6 +167,16 @@ const RestaurantDetailPage = () => {
     };
     fetchRestaurantDetails();
   }, [params.id]);
+
+  useEffect(() => {
+    if (error) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: error.message || "Failed to load restaurant details",
+      });
+    }
+  }, [error, toast]);
 
   if (loading) {
     return <RestaurantDetailShimmer />;

@@ -56,6 +56,30 @@ interface DuplicateGroup {
   restaurants: Restaurant[];
 }
 
+interface ChartData {
+  labels: string[];
+  datasets: {
+    label: string;
+    data: number[];
+    backgroundColor: string[];
+    borderColor: string[];
+    borderWidth: number;
+  }[];
+}
+
+interface AnalyticsData {
+  totalUsers: number;
+  totalRestaurants: number;
+  totalBookings: number;
+  recentBookings: {
+    id: string;
+    restaurantName: string;
+    customerName: string;
+    date: string;
+    time: string;
+  }[];
+}
+
 export default function AdminDashboard() {
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [duplicates, setDuplicates] = useState<DuplicateGroup[]>([]);
@@ -277,6 +301,19 @@ export default function AdminDashboard() {
         description: "No duplicate restaurants found!",
       });
     }
+  };
+
+  const handleChartData = (data: AnalyticsData): ChartData => {
+    return {
+      labels: ['Users', 'Restaurants', 'Bookings'],
+      datasets: [{
+        label: 'Platform Statistics',
+        data: [data.totalUsers, data.totalRestaurants, data.totalBookings],
+        backgroundColor: ['#4CAF50', '#2196F3', '#FFC107'],
+        borderColor: ['#388E3C', '#1976D2', '#FFA000'],
+        borderWidth: 1
+      }]
+    };
   };
 
   if(loading){

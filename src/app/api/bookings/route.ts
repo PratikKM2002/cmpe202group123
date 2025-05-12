@@ -30,7 +30,9 @@ export async function GET(request: Request) {
     return NextResponse.json(bookings);
   } catch (error) {
     console.error('Error fetching bookings:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ 
+      error: error instanceof Error ? error.message : 'Internal server error' 
+    }, { status: 500 });
   }
 }
 
@@ -49,6 +51,7 @@ export async function POST(request: Request) {
     try {
       payload = verifyToken(token) as JwtPayload;
     } catch (error) {
+      console.error('Token verification failed:', error);
       return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
     }
 
@@ -110,6 +113,7 @@ export async function PATCH(request: Request) {
     try {
       payload = verifyToken(token) as JwtPayload;
     } catch (error) {
+      console.error('Token verification failed:', error);
       return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
     }
 
@@ -140,6 +144,8 @@ export async function PATCH(request: Request) {
     return NextResponse.json(updatedBooking);
   } catch (error) {
     console.error('Error updating booking:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ 
+      error: error instanceof Error ? error.message : 'Internal server error' 
+    }, { status: 500 });
   }
 } 

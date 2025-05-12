@@ -1,7 +1,7 @@
 import { Button } from "./ui/button";
 import { useRouter } from 'next/navigation';
 import { useState, useMemo } from "react";
-import BookingForm from './BookingForm';
+import Image from 'next/image';
 import {
   Select,
   SelectContent,
@@ -146,14 +146,15 @@ export default function RestaurantCardUser({ restaurants, onDeleteClick, onEditC
             className="border rounded p-4 shadow hover:shadow-lg cursor-pointer"
             onClick={() => router.push(`/restaurants/${restaurant.id}`)}
           >
-            <img
-              src={restaurant.imageUrl}
-              alt={`${restaurant.name} image`}
-              width={400}
-              height={300}
-              className="mb-4 rounded object-cover"
-              loading="lazy"
-            />
+            <div className="relative w-full h-48 mb-4">
+              <Image
+                src={restaurant.imageUrl}
+                alt={`${restaurant.name} image`}
+                fill
+                className="rounded object-cover"
+                loading="lazy"
+              />
+            </div>
             <h3 className="text-lg font-semibold truncate">{restaurant.name}</h3>
             <p className="truncate">{restaurant.description}</p>
             <p className="truncate">
@@ -178,7 +179,7 @@ export default function RestaurantCardUser({ restaurants, onDeleteClick, onEditC
                 <Button
                   onClick={(e) => {
                     e.stopPropagation();
-                    onEditClick && onEditClick(restaurant);
+                    onEditClick?.(restaurant);
                   }}
                 >
                   Edit
@@ -186,7 +187,7 @@ export default function RestaurantCardUser({ restaurants, onDeleteClick, onEditC
                 <button 
                   onClick={(e) => {
                     e.stopPropagation();
-                    onDeleteClick && onDeleteClick(restaurant.id);
+                    onDeleteClick?.(restaurant.id);
                   }}
                   className="bg-red-500 text-white py-1 px-3 rounded"
                 >
@@ -199,7 +200,7 @@ export default function RestaurantCardUser({ restaurants, onDeleteClick, onEditC
                 <Button
                   onClick={(e) => {
                     e.stopPropagation();
-                    onEditClick && onEditClick(restaurant);
+                    onEditClick?.(restaurant);
                   }}
                 >
                   Edit

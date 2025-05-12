@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { jwtDecode } from "jwt-decode";
 import { Star, X } from 'lucide-react';
 import BookingForm from "@/components/BookingForm";
+import Image from "next/image";
 
 interface Owner {
   id: number;
@@ -195,10 +196,12 @@ const RestaurantDetailPage = () => {
       <div className="max-w-5xl mx-auto">
         {/* Hero Image */}
         <div className="relative aspect-video rounded-3xl overflow-hidden shadow-lg mb-8">
-          <img
+          <Image
             src={restaurant.imageUrl}
             alt={restaurant.name}
-            className="object-cover w-full h-full"
+            fill
+            className="object-cover"
+            priority
           />
           <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-6">
             <h1 className="text-4xl font-extrabold text-white drop-shadow mb-2">{restaurant.name}</h1>
@@ -292,7 +295,13 @@ const RestaurantDetailPage = () => {
           )}
           {restaurant.reviews.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-12 animate-fade-in">
-              <img src="https://illustrations.popsy.co/gray/empty-state.svg" alt="No reviews" className="w-32 mb-4 opacity-80" />
+              <Image 
+                src="https://illustrations.popsy.co/gray/empty-state.svg" 
+                alt="No reviews" 
+                width={128}
+                height={128}
+                className="mb-4 opacity-80" 
+              />
               <p className="text-gray-500">No reviews yet</p>
             </div>
           ) : (

@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Search, MapPin, Star, PenSquare, Store, ShieldCheck } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
+import Image from 'next/image';
 
 interface UserRoleCardProps {
   icon: React.ReactNode;
@@ -24,7 +25,7 @@ interface FeatureCardProps {
   description: string;
 }
 
-const RESTAURANT_BG = 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1500&q=80'; // Example Unsplash restaurant image
+const RESTAURANT_BG = 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1500&q=80';
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -48,7 +49,13 @@ export default function Home() {
     <div className="relative min-h-screen flex flex-col justify-center items-center overflow-x-hidden">
       {/* Background image with dark overlay */}
       <div className="absolute inset-0 z-0">
-        <img src={RESTAURANT_BG} alt="Restaurant background" className="w-full h-full object-cover" />
+        <Image 
+          src={RESTAURANT_BG} 
+          alt="Restaurant background" 
+          fill
+          className="object-cover"
+          priority
+        />
         <div className="absolute inset-0 bg-black/60" />
       </div>
       {/* Main content with frosted glass effect */}

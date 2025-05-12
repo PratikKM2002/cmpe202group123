@@ -5,6 +5,7 @@ import { useBusinessAuth } from '@/hooks/useBusinessAuth';
 import { useAdminAuth } from '@/hooks/useAdminAuth';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
+import { useEffect, useState } from 'react';
 
 export default function Navbar() {
   const { isAuthenticated: isUserAuthenticated } = useUserAuth();
@@ -12,19 +13,33 @@ export default function Navbar() {
   const { isAuthenticated: isAdminAuthenticated } = useAdminAuth();
   const router = useRouter();
   const { toast } = useToast();
+  const [username, setUsername] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Try to get the username from localStorage
+    const name = localStorage.getItem('user-name');
+    setUsername(name);
+    // Listen for storage changes (e.g., login/logout in other tabs)
+    const handleStorage = () => {
+      setUsername(localStorage.getItem('user-name'));
+    };
+    window.addEventListener('storage', handleStorage);
+    return () => window.removeEventListener('storage', handleStorage);
+  }, [isUserAuthenticated, isBusinessAuthenticated, isAdminAuthenticated]);
 
   const handleLogout = () => {
     // Clear all possible tokens
     localStorage.removeItem('user-token');
     localStorage.removeItem('user-token-expiration');
+    localStorage.removeItem('user-name');
     localStorage.removeItem('business-token');
     localStorage.removeItem('business-token-expiration');
     localStorage.removeItem('admin-token');
     localStorage.removeItem('admin-token-expiration');
-    
     toast({
       description: "Logged out successfully",
     });
+    setUsername(null);
     router.push('/restaurants');
   };
 
@@ -54,12 +69,17 @@ export default function Navbar() {
             </Link>
           ))}
           {isAuthenticated ? (
-            <button
-              onClick={handleLogout}
-              className="text-gray-700 hover:text-orange-600 font-medium transition px-3 py-1 rounded-lg hover:bg-orange-50"
-            >
-              Logout
-            </button>
+            <>
+              {username && (
+                <span className="text-gray-700 font-medium px-3 py-1">Welcome, {username}</span>
+              )}
+              <button
+                onClick={handleLogout}
+                className="text-gray-700 hover:text-orange-600 font-medium transition px-3 py-1 rounded-lg hover:bg-orange-50"
+              >
+                Logout
+              </button>
+            </>
           ) : (
             <Link
               href="/user/login"

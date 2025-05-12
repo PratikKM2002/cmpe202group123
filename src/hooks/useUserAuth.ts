@@ -39,7 +39,14 @@ export const useUserAuth = (): AuthHookReturn => {
       }
     };
 
+    // Check auth on mount
     checkAuth();
+
+    // Set up an interval to check auth status periodically
+    const interval = setInterval(checkAuth, 60000); // Check every minute
+
+    // Clean up interval on unmount
+    return () => clearInterval(interval);
   }, []);
 
   const login = async (email: string, password: string): Promise<string | null> => {
@@ -59,10 +66,13 @@ export const useUserAuth = (): AuthHookReturn => {
           description: "Login successful",
           variant: "default",
         });
-        setIsAuthenticated(true);
         const expirationTime = Date.now() + TOKEN_EXPIRATION_TIME;
         localStorage.setItem(USER_TOKEN_KEY, data.token);
         localStorage.setItem(USER_TOKEN_EXPIRATION_KEY, expirationTime.toString());
+        if (data.name) {
+          localStorage.setItem('user-name', data.name);
+        }
+        setIsAuthenticated(true);
         router.push('/restaurants');
         return data.token;
       } else {
@@ -71,6 +81,7 @@ export const useUserAuth = (): AuthHookReturn => {
           description: data.error || 'Login failed',
           variant: "destructive",
         });
+        setIsAuthenticated(false);
       }
     } catch (error) {
       console.error('Error during login:', error);
@@ -79,6 +90,7 @@ export const useUserAuth = (): AuthHookReturn => {
         description: 'An error occurred while logging in',
         variant: "destructive",
       });
+      setIsAuthenticated(false);
     } finally {
       setLoading(false);
     }

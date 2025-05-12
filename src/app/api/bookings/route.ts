@@ -89,9 +89,6 @@ export async function POST(request: Request) {
       },
     });
 
-    // TODO: Send confirmation email/SMS here
-    // You can implement email/SMS sending logic using services like SendGrid, Twilio, etc.
-
     return NextResponse.json(booking);
   } catch (error) {
     console.error('Error creating booking:', error);
